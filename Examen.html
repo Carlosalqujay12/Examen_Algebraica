@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebraic Expression Evaluator</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body{
+            background: #355C7D;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #C06C84, #6C5B7B, #355C7D);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #C06C84, #6C5B7B, #355C7D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+        }
+      </style>
+</head>
+<body>
+    <h1>Expresion Algebraicas</h1>
+    <div>
+        <label for="expression">Ingrese una expresión algebraica (usando 'x' como variable):</label>
+        <input type="text" id="expression"   >
+    </div>
+    <div>
+        <label for="start">Introduzca el intervalo inicial:</label>
+        <input type="number" id="start" placeholder="Intervalo Inicial">
+    </div>
+    <div>
+        <label for="end">Introduzca el intervalo final:</label>
+        <input type="number" id="end" placeholder="Intervalo Final">
+    </div>
+    <button onclick="evaluateExpression()">Evaluar</button>
+    <div>
+        <h2>Resultado:</h2>
+        <p id="resultado"></p>
+    </div>
+    <div>
+        <h2>Grafica:</h2>
+        <canvas id="chart"></canvas>
+    </div>
+
+    <script>
+        function evaluateExpression() {
+            const expression = document.getElementById('expression').value;
+            const start = parseFloat(document.getElementById('start').value);
+            const end = parseFloat(document.getElementById('end').value);
+            
+            const labels = [];
+            const data = [];
+            
+            for (let x = start; x <= end; x += 0.1) {
+                labels.push(x);
+                // Evaluar la expresión para cada valor de x.
+                const result = eval(expression.replace('x', x));
+                data.push(result);
+            }
+            
+            const ctx = document.getElementById('chart').getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Result',
+                        data: data,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'X'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Result'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Mostrar el resultado
+            const resultElement = document.getElementById('result');
+            resultElement.textContent = `Result: ${data[data.length - 1]}`;
+        }
+    </script>
+</body>
+</html>
